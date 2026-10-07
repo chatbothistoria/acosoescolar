@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocolo Acoso Escolar — CEIP Blas Sierra</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+:root{
+  /* Paleta Institucional - Modo Claro (Por defecto) */
+  --navy: #0F3A59; 
+  --navy2: #0B2B43;
+  --teal: #197B8A;
+  --teal-light: #F0F7F8;
+  --red: #A6192E; 
+  --red-light: #FDF2F3;
+  --green: #146c43;
+  --green-light: #edf7f2;
+  --gold: #A37A00;
+  --gold-light: #fffcf2;
+  --bg-page: #F5F7FA;
+  --card: #ffffff;
+  --txt: #1E293B;
+  --txt2: #475569;
+  --txt3: #64748B;
+  --bdr: #E2E8F0;
+  
+  --r: 8px; --r2: 12px;
+  --sh: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --sh2: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --font: 'Inter', system-ui, sans-serif;
+  --serif: 'Merriweather', serif;
+}
+
+/* Paleta - Modo Oscuro */
+[data-theme="dark"] {
+  --navy: #38bdf8; 
+  --navy2: #0ea5e9;
+  --teal: #2dd4bf;
+  --teal-light: rgba(45, 212, 191, 0.15);
+  --red: #fb7185;
+  --red-light: rgba(251, 113, 133, 0.15);
+  --green: #4ade80;
+  --green-light: rgba(74, 222, 128, 0.15);
+  --gold: #facc15;
+  --gold-light: rgba(250, 204, 21, 0.15);
+  --bg-page: #0f172a;
+  --card: #1e293b;
+  --txt: #f8fafc;
+  --txt2: #cbd5e1;
+  --txt3: #94a3b8;
+  --bdr: #334155;
+  --sh: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --sh2: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg-page);color:var(--txt);min-height:100vh;font-size:15px;line-height:1.6; transition: background 0.3s, color 0.3s;}
+
+/* TOAST NOTIFICATIONS */
+#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: var(--navy2); color: #fff; padding: 12px 20px; border-radius: 8px; box-shadow: var(--sh2); font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.toast.show { transform: translateX(0); }
+.toast.error { background: var(--red); }
+.toast.success { background: var(--green); }
+[data-theme="dark"] .toast { color: #0f172a; }
+[data-theme="dark"] .toast.error { color: #fff; background: #be123c;}
+[data-theme="dark"] .toast.success { color: #0f172a; background: #22c55e;}
+
+/* HEADER */
+header{background:#0F3A59;padding:0 20px;position:sticky;top:0;z-index:300;box-shadow:0 2px 10px rgba(0,0,0,.15); transition: background 0.3s;}
+[data-theme="dark"] header { background: #020617; border-bottom: 1px solid var(--bdr); }
+.hdr{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:14px;height:64px}
+.hdr-icon{font-size: 1.8rem; color: #fff;}
+.hdr-title{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff;line-height:1.2}
+.hdr-sub{font-size:.65rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.05em; font-family: var(--font);}
+
+/* THEME TOGGLE */
+.theme-btn { margin-left: auto; background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.theme-btn:hover { background: rgba(255,255,255,0.1); }
+
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 60px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{display:none}}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}
+.sc{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh);border:1px solid var(--bdr); transition: all 0.3s;}
+.sc-ttl{font-size:.7rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bdr); display:flex; align-items:center; gap:6px}
+.ci{display:flex;gap:10px;margin-bottom:12px}.ci:last-child{margin-bottom:0}
+.ci-n{width:22px;height:22px;border-radius:50%;background:var(--teal-light);color:var(--teal);border:1px solid rgba(25, 123, 138, 0.2);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ci-lbl{font-size:.8rem;font-weight:600;color:var(--txt)}.ci-desc{font-size:.7rem;color:var(--txt3);line-height:1.4;margin-top:2px}
+.sb-norm-btn{display:flex;align-items:flex-start;gap:8px;padding:10px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg-page);text-decoration:none;color:var(--txt2);margin-bottom:8px;transition:all .2s; cursor:pointer;}
+.sb-norm-btn:last-child{margin-bottom:0}
+.sb-norm-btn:hover{border-color:var(--teal);background:var(--teal-light);color:var(--teal)}
+.sb-norm-icon{font-size:1rem;color:var(--teal);flex-shrink:0;margin-top:2px;}
+.sb-norm-txt{display:flex;flex-direction:column;gap:2px; text-align:left;}
+.sb-norm-txt strong{font-size:.75rem;font-weight:600;color:var(--txt);line-height:1.2}
+.sb-norm-txt span{font-size:.65rem;color:var(--txt3);line-height:1.3}
+
+/* MAIN CONTENT */
+.main{display:flex;flex-direction:column;gap:20px}
+
+/* TEXTAREA CARD */
+.in-card{background:var(--card);border-radius:var(--r2);padding:24px;box-shadow:var(--sh);border:1px solid var(--bdr); transition: all 0.3s;}
+.in-lbl{font-weight:600;font-size:1rem;color:var(--txt);margin-bottom:6px; display:flex; align-items:center; gap:8px}
+.in-hint{font-size:.8rem;color:var(--txt3);margin-bottom:14px;line-height:1.5}
+.textarea-wrapper { position: relative; }
+textarea{width:100%;min-height:120px;border:1px solid var(--bdr);border-radius:8px;padding:14px;padding-bottom:28px;font-family:var(--font);font-size:.9rem;color:var(--txt);resize:vertical;background:var(--bg-page);line-height:1.6;outline:none;transition:all .2s}
+textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light);background:var(--card)}
+.char-counter { position: absolute; bottom: 10px; right: 14px; font-size: 0.75rem; font-weight: 600; color: var(--red); transition: color 0.2s; }
+.char-counter.valid { color: var(--teal); }
+
+.ex-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}
+.ex-lbl{font-size:.75rem;color:var(--txt3);font-weight:500}
+.ex-chip{font-size:.7rem;padding:4px 12px;border-radius:12px;background:var(--bg-page);border:1px solid var(--bdr);color:var(--txt2);cursor:pointer;font-family:var(--font);font-weight:500;transition:all .2s}
+.ex-chip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+[data-theme="dark"] .ex-chip:hover { color: #0f172a; }
+
+/* STEPPER UI */
+.stepper-wrap{background:var(--card);border-radius:var(--r2);box-shadow:var(--sh);border:1px solid var(--bdr);overflow:hidden; transition: all 0.3s;}
+.stepper-nav{display:flex;border-bottom:1px solid var(--bdr);background:var(--bg-page);position:relative}
+.st-tab{flex:1;text-align:center;padding:14px 10px;font-size:.75rem;font-weight:600;color:var(--txt3);cursor:pointer;transition:all .2s;border-bottom:3px solid transparent;user-select:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.st-tab.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--card)}
+.st-tab.completed{color:var(--navy)}
+.st-tab i{font-size: 1rem;}
+@media(max-width:600px){.st-tab span{display:none} .st-tab{padding:14px 0}}
+
+.st-pane{display:none;padding:24px;}
+.st-pane.active{display:block; animation: fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.st-hdr{margin-bottom:20px;}
+.st-title{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:4px; font-family: var(--serif)}
+.st-sub{font-size:.85rem;color:var(--txt2)}
+.st-normref{font-size:.75rem;font-style:italic;color:var(--teal);background:var(--teal-light);padding:8px 12px;border-radius:6px;border-left:3px solid var(--teal);margin-bottom:20px;line-height:1.5}
+
+.q-block{margin-bottom:24px; page-break-inside: avoid; break-inside: avoid;}
+.q-block:last-child{margin-bottom:0}
+.q-text{font-size:.9rem;font-weight:600;color:var(--txt);margin-bottom:6px;line-height:1.4}
+
+.radio-group{display:flex;flex-direction:column;gap:8px}
+.radio-opt{position:relative; display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--bdr);border-radius:8px;cursor:pointer;transition:all .2s;background:var(--bg-page)}
+.radio-opt:hover{border-color:var(--teal);background:var(--teal-light)}
+.radio-opt:focus-within{box-shadow: 0 0 0 2px var(--teal-light), 0 0 0 1px var(--teal); border-color:var(--teal);}
+.radio-opt.sel{border-color:var(--teal);background:var(--teal-light);box-shadow: 0 0 0 1px var(--teal)}
+.radio-opt input[type=radio] { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--bdr);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s; background:var(--card)}
+.radio-opt.sel .radio-dot{border-color:var(--teal);background:var(--teal)}
+.radio-opt.sel .radio-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--card);display:block}
+.radio-txt{font-size:.85rem;color:var(--txt2);line-height:1.45}
+.radio-opt.sel .radio-txt{color:var(--navy);font-weight:500}
+[data-theme="dark"] .radio-opt.sel .radio-dot::after{background:#0f172a;}
+
+.check-group{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:540px){.check-group{grid-template-columns:1fr}}
+.check-opt{position:relative; display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--bdr);border-radius:8px;cursor:pointer;background:var(--bg-page);transition:all .2s}
+.check-opt:hover{border-color:var(--teal);background:var(--teal-light)}
+.check-opt:focus-within{box-shadow: 0 0 0 2px var(--teal-light), 0 0 0 1px var(--teal); border-color:var(--teal);}
+.check-opt.sel{border-color:var(--teal);background:var(--teal-light);box-shadow: 0 0 0 1px var(--teal)}
+.check-opt input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
+.check-box{width:18px;height:18px;border-radius:4px;border:2px solid var(--bdr);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--card);transition:all .2s; background:var(--card)}
+.check-opt.sel .check-box{border-color:var(--teal);background:var(--teal)}
+.check-opt.sel .check-box::after{content:'✓';}
+.check-txt{font-size:.85rem;color:var(--txt2);line-height:1.35}
+.check-opt.sel .check-txt{color:var(--navy);font-weight:500}
+[data-theme="dark"] .check-opt.sel .check-box { color: #0f172a; }
+
+.st-footer{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--bdr)}
+.btn-nav{padding:10px 20px;border-radius:8px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-family:var(--font);font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-nav:hover:not(:disabled){background:var(--bg-page);color:var(--txt)}
+.btn-nav:disabled{opacity:0.5;cursor:not-allowed;background:var(--bg-page);}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover:not(:disabled){background:#156572;color:#fff;box-shadow:0 4px 6px -1px rgba(25,123,138,0.2)}
+.btn-final{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:600}
+.btn-final:hover{background:var(--navy2);color:#fff;box-shadow:var(--sh)}
+[data-theme="dark"] .btn-primary { color: #0f172a; }
+[data-theme="dark"] .btn-primary:hover:not(:disabled) { background: #14b8a6; color:#0f172a;}
+[data-theme="dark"] .btn-final { color: #0f172a; }
+[data-theme="dark"] .btn-final:hover { background: #0284c7; color:#0f172a;}
+
+/* RESULTADOS */
+.result{display:none;flex-direction:column;gap:20px;animation:fadeUp .4s ease}
+.result.on{display:flex}
+.result-actions{display:flex;gap:10px;flex-wrap:wrap; background:var(--card); padding:16px; border-radius:var(--r2); box-shadow:var(--sh); border:1px solid var(--bdr); page-break-inside: avoid;}
+.btn-act{padding:10px 18px;border-radius:8px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-family:var(--font);font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.btn-act i{font-size: 1.1rem;}
+.btn-act:hover{border-color:var(--navy);color:var(--navy);background:var(--bg-page)}
+
+.v-banner{border-radius:var(--r2);overflow:hidden;box-shadow:var(--sh2);border:1px solid var(--bdr); page-break-inside: avoid;}
+.v-hdr{padding:24px 30px;display:flex;align-items:center;gap:18px}
+.v-si .v-hdr{background:linear-gradient(135deg, var(--red), #7A1222)}
+.v-no .v-hdr{background:linear-gradient(135deg, var(--green), #0D4A2E)}
+.v-ind .v-hdr{background:linear-gradient(135deg, var(--gold), #7A5C00)}
+[data-theme="dark"] .v-si .v-hdr {background:linear-gradient(135deg, #be123c, #881337)}
+[data-theme="dark"] .v-no .v-hdr {background:linear-gradient(135deg, #15803d, #14532d)}
+[data-theme="dark"] .v-ind .v-hdr {background:linear-gradient(135deg, #a16207, #713f12)}
+.v-icon{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;color:#fff}
+.v-lbl{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fff;line-height:1.2}
+.v-sub{font-size:.85rem;color:rgba(255,255,255,.85);margin-top:6px;line-height:1.4}
+.v-body{background:var(--card);padding:24px 30px}
+
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px}
+.crit-card{border-radius:var(--r);border:1px solid var(--bdr);padding:16px;background:var(--bg-page); page-break-inside: avoid; break-inside: avoid;}
+.crit-title{font-weight:700;font-size:.85rem;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.c-badge{font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.cb-cumple{background:#ffe4e6;color:#e11d48;border:1px solid #fecdd3}
+.cb-indicios{background:#fef9c3;color:#d97706;border:1px solid #fef08a}
+.cb-no{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+[data-theme="dark"] .cb-cumple {background:rgba(225,29,72,0.2); border-color:rgba(225,29,72,0.4); color:#fda4af;}
+[data-theme="dark"] .cb-indicios {background:rgba(217,119,6,0.2); border-color:rgba(217,119,6,0.4); color:#fde047;}
+[data-theme="dark"] .cb-no {background:rgba(22,163,74,0.2); border-color:rgba(22,163,74,0.4); color:#86efac;}
+.ct-lbl{font-size:.7rem;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;border-top:1px solid var(--bdr);padding-top:8px}
+.ct-item{font-size:.75rem;color:var(--txt2);padding:3px 0;display:flex;gap:6px;line-height:1.4}
+.ct-item i{color:var(--teal);margin-top:2px}
+
+.reasoning{background:var(--bg-page);border:1px solid var(--bdr);border-radius:8px;padding:16px 20px;font-size:.9rem;color:var(--txt2);line-height:1.65; page-break-inside: avoid;}
+.reasoning strong{color:var(--navy)}
+
+.warn-box{border-radius:8px;padding:14px 18px;font-size:.85rem;line-height:1.55;margin-top:12px; display:flex; gap:12px; align-items:flex-start; page-break-inside: avoid;}
+.warn-icon{font-size: 1.5rem; flex-shrink: 0;}
+.warn-ciber{background:var(--red-light);border:1px solid rgba(225,29,72,0.3);color:var(--red)}
+.warn-genero{background:rgba(168, 85, 247, 0.1);border:1px solid rgba(168, 85, 247, 0.3);color:#a855f7}
+
+/* PLAN DE CHOQUE A 24 HORAS */
+.choque-box {background:var(--card); border:2px solid var(--teal); border-radius:var(--r2); padding:20px; margin-bottom:20px; page-break-inside: avoid; position: relative; overflow: hidden;}
+.choque-box::before {content:''; position:absolute; top:0; left:0; width:6px; height:100%; background:var(--teal);}
+.choque-hdr {display:flex; align-items:center; gap:10px; font-family:var(--serif); font-size:1.1rem; font-weight:700; color:var(--teal); margin-bottom:8px;}
+.choque-desc {font-size:0.85rem; color:var(--txt2); margin-bottom:16px;}
+.choque-list {list-style:none; display:flex; flex-direction:column; gap:12px;}
+.choque-list li {display:flex; align-items:flex-start; gap:10px; font-size:0.9rem; color:var(--txt); line-height:1.5; background:var(--bg-page); padding:12px 16px; border-radius:8px; border:1px solid var(--bdr);}
+.choque-list li i {color:var(--teal); font-size:1.2rem; flex-shrink:0; margin-top:2px;}
+[data-theme="dark"] .choque-list li {background: rgba(45, 212, 191, 0.05);}
+
+/* DRAFT CONV */
+.conv-draft-box {background:var(--bg-page); border:1px solid var(--bdr); border-radius:var(--r2); padding:20px; margin-top:24px; page-break-inside: avoid;}
+.conv-draft-hdr {display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.conv-draft-title {font-family:var(--serif); font-size:1.05rem; font-weight:700; color:var(--navy); display:flex; align-items:center; gap:8px;}
+.conv-draft-text {width:100%; min-height:180px; background:var(--card); border:1px solid var(--bdr); border-radius:8px; padding:14px; font-family:monospace; font-size:.85rem; color:var(--txt2); resize:vertical; line-height:1.5; outline:none;}
+.conv-draft-text:focus {border-color:var(--teal); box-shadow: 0 0 0 2px var(--teal-light);}
+
+/* PROTOCOLO STEPS CSS */
+.proto-wrap{border:1px solid var(--bdr);border-radius:var(--r2);overflow:hidden;}
+.proto-hdr{background:var(--bg-page);padding:14px 20px;color:var(--navy);font-family:var(--serif);font-weight:700;font-size:.9rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
+.proto-body{padding:24px;background:var(--card);display:flex;flex-direction:column;gap:24px}
+.phase-title{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:4px;padding-bottom:6px;border-bottom:2px solid var(--teal)}
+.phase-note{font-size:.8rem;color:var(--txt3);font-style:italic;margin-bottom:14px}
+.pstep{display:flex;gap:14px;margin-bottom:12px;align-items:flex-start; page-break-inside: avoid;}
+.pstep-n{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+[data-theme="dark"] .pstep-n {color:#0f172a;}
+.pstep-title{font-weight:700;font-size:.9rem;color:var(--txt);margin-bottom:4px}
+.pstep-text{font-size:.85rem;color:var(--txt2);line-height:1.55}
+.pm{font-size:.7rem;padding:3px 10px;border-radius:4px;font-weight:600;display:inline-block;margin-top:6px;margin-right:6px}
+.pm-plazo{background:rgba(14, 165, 233, 0.15);color:#0284c7;border:1px solid rgba(14, 165, 233, 0.3)}
+.pm-resp{background:rgba(22, 163, 74, 0.15);color:#16a34a;border:1px solid rgba(22, 163, 74, 0.3)}
+.pm-doc{background:rgba(217, 119, 6, 0.15);color:#d97706;border:1px solid rgba(217, 119, 6, 0.3)}
+[data-theme="dark"] .pm-plazo {color: #38bdf8;}
+[data-theme="dark"] .pm-resp {color: #4ade80;}
+[data-theme="dark"] .pm-doc {color: #facc15;}
+
+/* MODAL NORMATIVA */
+.modal-ov{position:fixed;inset:0;background:rgba(0, 0, 0, 0.6);z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;backdrop-filter: blur(3px);}
+.modal-ov.open{display:flex; animation: fadeIn .2s}
+.modal{background:var(--card);border-radius:var(--r2);max-width:850px;width:100%;margin:auto;box-shadow:0 25px 50px -12px rgba(0, 0, 0, 0.5);overflow:hidden}
+.modal-hdr{background:#0F3A59;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
+[data-theme="dark"] .modal-hdr { background: #020617; border-bottom: 1px solid var(--bdr); }
+.modal-hdr-title{font-family:var(--serif);font-size:1.1rem;font-weight:700;color:#fff; display:flex; align-items:center; gap:10px}
+.modal-close{background:transparent;border:none;color:#fff;font-size:1.5rem;cursor:pointer;opacity:0.7;transition:opacity .2s}
+.modal-close:hover{opacity:1}
+.modal-body{padding:24px;max-height:75vh;overflow-y:auto; background:var(--bg-page)}
+.ns{border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:10px; page-break-inside: avoid;}
+.ns-hdr{background:var(--card);padding:11px 15px;font-weight:700;font-size:.84rem;color:var(--txt);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:background .15s;border-bottom:1px solid var(--bdr)}
+.ns-hdr:hover{background:var(--bg-page)}
+.ns-arr{transition:transform .2s;font-size:.68rem;color:var(--txt3)}
+.ns-body{padding:15px;font-size:.82rem;color:var(--txt2);line-height:1.7;display:none; background:var(--card)}
+.ns-body.open{display:block}
+.ns-body h4{font-weight:700;color:var(--txt);margin:11px 0 4px;font-size:.83rem}.ns-body h4:first-child{margin-top:0}
+.ns-body p{margin:4px 0}.ns-body ul{margin:5px 0 5px 16px}.ns-body li{margin:3px 0}
+.art-ref{font-size:.7rem;font-style:italic;color:var(--teal);font-weight:600;display:inline-block;background:var(--teal-light);padding:2px 7px;border-radius:4px;margin-top:5px}
+.cbox{background:var(--bg-page);border-left:3px solid var(--teal);padding:10px 12px;border-radius:0 6px 6px 0;margin:7px 0}
+.cbox strong{display:block;color:var(--txt);font-size:.84rem;margin-bottom:2px}
+.nobox{background:var(--red-light);border-left:3px solid var(--red);padding:10px 12px;border-radius:0 6px 6px 0;margin:7px 0}
+.anx2{background:var(--bg-page);border-radius:6px;padding:7px 11px;margin:5px 0;border:1px solid var(--bdr)}
+.anx2 strong{color:var(--txt);font-size:.82rem}
+
+.banner-legal{background:var(--card);border-radius:var(--r2);padding:24px;border:1px solid var(--bdr);margin-top:24px;font-size:.85rem;color:var(--txt2)}
+.banner-legal h2{font-family:var(--serif);font-size:1rem;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+
+/* ====== ESTILOS ESPECÍFICOS PARA EL PDF FORMAL E IMPRESIÓN ====== */
+#pdf-header { display: none; }
+
+@media print {
+  body, .pdf-formal { background: #ffffff !important; color: #000000 !important; }
+  header, .sidebar, .result-actions, .theme-btn { display: none !important; }
+  .wrap { padding: 0; max-width: 100%; }
+  .in-card, .stepper-wrap, .banner-legal { display: none !important; }
+  .result { display: flex !important; }
+  
+  .v-banner, .v-hdr, .v-body, .crit-card, .reasoning, .proto-wrap, .proto-hdr, .proto-body, .conv-draft-box, .choque-box, .choque-list li {
+      background: #ffffff !important; color: #000000 !important; border-color: #cccccc !important; box-shadow: none !important;
+  }
+  .v-hdr { border-bottom: 2px solid #0F3A59 !important; padding: 15px 0 !important; background: transparent !important; }
+  .v-lbl, .v-icon { color: #0F3A59 !important; }
+  .v-sub { color: #333333 !important; }
+  .pm-plazo, .pm-resp, .pm-doc { background: transparent !important; border: 1px solid #999999 !important; color: #333333 !important; }
+}
+
+.pdf-formal { background: #ffffff !important; color: #000000 !important; }
+.pdf-formal #pdf-header-temp { display: block; text-align: center; margin-bottom: 30px; }
+.pdf-formal .v-banner, .pdf-formal .v-hdr, .pdf-formal .v-body, 
+.pdf-formal .crit-card, .pdf-formal .reasoning, .pdf-formal .proto-wrap,
+.pdf-formal .proto-hdr, .pdf-formal .proto-body, .pdf-formal .conv-draft-box, .pdf-formal .choque-box, .pdf-formal .choque-list li {
+    background: #ffffff !important; color: #000000 !important; border-color: #cccccc !important; box-shadow: none !important;
+}
+.pdf-formal .v-hdr { border-bottom: 2px solid #0F3A59 !important; padding: 15px 0 !important; background: transparent !important; }
+.pdf-formal .v-lbl, .pdf-formal .v-icon { color: #0F3A59 !important; }
+.pdf-formal .v-sub { color: #333333 !important; }
+.pdf-formal .pm-plazo, .pdf-formal .pm-resp, .pdf-formal .pm-doc {
+    background: transparent !important; border: 1px solid #999999 !important; color: #333333 !important;
+}
+.pdf-formal .disclaimer { border:none; background:transparent; padding:0; margin-top:20px; font-style:italic; color:#666 !important;}
+</style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<header>
+  <div class="hdr">
+    <i class="ph-fill ph-scales hdr-icon"></i>
+    <div>
+      <div class="hdr-title">Protocolo Acoso Escolar</div>
+      <div class="hdr-sub">Herramienta de valoración docente</div>
+    </div>
+    <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Cambiar modo oscuro/claro">
+      <i class="ph ph-moon" id="themeIcon"></i>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    
+    <aside class="sidebar">
+      <div class="sc">
+        <div class="sc-ttl"><i class="ph ph-floppy-disk"></i> Progreso Local (LOPD)</div>
+        <button class="sb-norm-btn" onclick="saveProgress()" style="width:100%; justify-content:center; gap:8px; font-weight:600;">
+          <i class="ph ph-download-simple"></i> Guardar sesión (.json)
+        </button>
+        <button class="sb-norm-btn" onclick="document.getElementById('fileLoad').click()" style="width:100%; justify-content:center; gap:8px; font-weight:600;">
+          <i class="ph ph-upload-simple"></i> Cargar sesión
+        </button>
+        <input type="file" id="fileLoad" accept=".json" style="display:none" onchange="loadProgress(event)">
+        <div class="ci-desc" style="text-align:center; margin-top:8px;">Datos cifrados en tu equipo. No requieren internet.</div>
+      </div>
+
+      <div class="sc">
+        <div class="sc-ttl"><i class="ph ph-target"></i> Criterios de Acoso</div>
+        <div class="ci"><div class="ci-n">1</div><div><div class="ci-lbl">Intencionalidad</div><div class="ci-desc">Conducta dirigida a dañar.</div></div></div>
+        <div class="ci"><div class="ci-n">2</div><div><div class="ci-lbl">Repetición</div><div class="ci-desc">Constante y prolongada.</div></div></div>
+        <div class="ci"><div class="ci-n">3</div><div><div class="ci-lbl">Desequilibrio</div><div class="ci-desc">Asimetría de poder.</div></div></div>
+        <div class="ci"><div class="ci-n">4</div><div><div class="ci-lbl">Indefensión</div><div class="ci-desc">La víctima no puede salir.</div></div></div>
+      </div>
+      
+      <div class="sc">
+        <div class="sc-ttl"><i class="ph ph-books"></i> Normativa Oficial</div>
+        <a class="sb-norm-btn" href="javascript:void(0)" onclick="openNorm()">
+          <i class="ph ph-article sb-norm-icon"></i>
+          <div class="sb-norm-txt"><strong>Ver Resumen Normativo</strong><span>Consultar definiciones y anexos</span></div>
+        </a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="in-card">
+        <div class="in-lbl"><i class="ph ph-pencil-simple-line"></i> Descripción de la situación</div>
+        <div class="in-hint">Describe detalladamente los hechos observados: frecuencia, implicados, conductas concretas y signos de malestar.</div>
+        <div class="textarea-wrapper">
+          <textarea id="txt" placeholder="Ejemplo: Desde hace más de un mes, un alumno es insultado y apartado todos los días en el recreo por tres compañeros..." oninput="updateCharCount()"></textarea>
+          <div id="charCounter" class="char-counter">0 / mín. 30</div>
+        </div>
+        <div class="ex-row">
+          <span class="ex-lbl">Ejemplos rápidos:</span>
+          <button class="ex-chip" onclick="setEx('insultos')">Insultos repetidos</button>
+          <button class="ex-chip" onclick="setEx('exclusion')">Exclusión social</button>
+          <button class="ex-chip" onclick="setEx('fisico')">Agresión física</button>
+          <button class="ex-chip" onclick="setEx('ciber')">Ciberacoso</button>
+        </div>
+      </div>
+
+      <div class="stepper-wrap">
+        <div class="stepper-nav">
+          <div class="st-tab active" id="tab-1" onclick="goToStep(1)"><i class="ph-fill ph-check-circle" id="ico-tab-1" style="display:none;color:var(--green)"></i><span>1. Intencionalidad</span></div>
+          <div class="st-tab" id="tab-2" onclick="goToStep(2)"><i class="ph-fill ph-check-circle" id="ico-tab-2" style="display:none;color:var(--green)"></i><span>2. Repetición</span></div>
+          <div class="st-tab" id="tab-3" onclick="goToStep(3)"><i class="ph-fill ph-check-circle" id="ico-tab-3" style="display:none;color:var(--green)"></i><span>3. Desequilibrio</span></div>
+          <div class="st-tab" id="tab-4" onclick="goToStep(4)"><i class="ph-fill ph-check-circle" id="ico-tab-4" style="display:none;color:var(--green)"></i><span>4. Indefensión</span></div>
+        </div>
+
+        <div class="st-pane active" id="step-1">
+          <div class="st-hdr">
+            <div class="st-title">Criterio 1: Intencionalidad</div>
+            <div class="st-sub">¿Las conductas van dirigidas deliberadamente a esta persona con intención de hacer daño?</div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">1. ¿Las agresiones van dirigidas a este alumno/a concreto?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q1c1" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, claramente va dirigido a esta persona concreta</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c1" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Parece que sí, aunque no siempre resulta del todo evidente</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c1" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No está claro, podría dirigirse a cualquier otro alumno/a</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c1" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No, parece casual o sin objetivo concreto</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">2. ¿Se aprecia intención de hacer daño, humillar o someter?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q2c1" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, la intención de dañar o humillar es claramente perceptible</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c1" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Probablemente sí, aunque no siempre resulta obvio</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c1" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es difícil de determinar en este momento</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c1" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No, parece sin intención de causar daño</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">3. ¿Cuál es el papel de la víctima en el inicio de los incidentes?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q3c1" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es un blanco pasivo: no inicia ni busca el conflicto</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c1" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sus reacciones (nerviosismo, torpeza, impulsividad) son usadas como excusa para atacarle</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c1" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">A veces responde, pero la agresión inicial siempre parte de los otros</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c1" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es un conflicto mutuo: ambos inician y se buscan de forma recíproca</div></label>
+            </div>
+          </div>
+          <div class="st-footer">
+            <button class="btn-nav" disabled><i class="ph ph-arrow-left"></i> Anterior</button>
+            <button class="btn-nav btn-primary" onclick="nextStep()">Siguiente <i class="ph ph-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="st-pane" id="step-2">
+          <div class="st-hdr">
+            <div class="st-title">Criterio 2: Repetición</div>
+            <div class="st-sub">¿La situación es constante y prolongada en el tiempo, generando expectativa de continuidad?</div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">1. ¿Desde cuándo se repite esta situación?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q1c2" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es la primera vez que consta o se observa que ocurre</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c2" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Menos de una semana</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c2" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Entre 1 y 4 semanas</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c2" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Más de un mes</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c2" value="e" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Más de un trimestre</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">2. ¿Con qué frecuencia se repiten estas conductas?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q2c2" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Solo ha ocurrido una única vez</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c2" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">De forma esporádica, de vez en cuando</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c2" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Varias veces por semana</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c2" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Casi todos los días o a diario</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">3. ¿La víctima teme que vuelva a ocurrir o cree que la situación va a continuar?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q3c2" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, teme que vuelva a ocurrir o da por hecho que continuará</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c2" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Probablemente sí: muestra preocupación o anticipa nuevos episodios</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c2" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No consta esa expectativa de continuidad</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c2" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No hay datos suficientes para valorarlo</div></label>
+            </div>
+          </div>
+          <div class="st-footer">
+            <button class="btn-nav" onclick="prevStep()"><i class="ph ph-arrow-left"></i> Anterior</button>
+            <button class="btn-nav btn-primary" onclick="nextStep()">Siguiente <i class="ph ph-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="st-pane" id="step-3">
+          <div class="st-hdr">
+            <div class="st-title">Criterio 3: Desequilibrio de poder y Espectadores</div>
+            <div class="st-sub">¿Existe una asimetría física, psicológica o social entre el/la agresor/a, la víctima y el grupo?</div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">1. ¿Existe una superioridad física relevante del agresor sobre la víctima?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q1c3" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, claramente superior en fuerza, tamaño o capacidad física</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c3" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Hay alguna diferencia aunque no es muy marcada</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c3" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Son físicamente similares en fuerza y tamaño</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c3" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">La víctima tiene más capacidad física que el/la agresor/a</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">2. ¿Suele actuar con apoyo de otros frente a una víctima sola?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q2c3" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, siempre o casi siempre es un grupo actuando contra la víctima sola</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c3" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">A veces el agresor actúa con apoyo de otros frente a la víctima</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c3" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es principalmente una situación entre dos personas, sin apoyo grupal claro del agresor</div></label>
+              <label class="radio-opt"><input type="radio" name="q2c3" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">La víctima también cuenta con apoyo de compañeros</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">3. ¿Tiene el agresor más estatus, popularidad o influencia (física o en redes sociales)?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q3c3" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, claramente: domina la influencia social del grupo frente a la víctima</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c3" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Tiene algo más de peso social o seguidores, aunque no es absoluto</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c3" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Son similares en cuanto a influencia o estatus en el grupo</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c3" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">La víctima tiene más influencia social que el/la agresor/a</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">4. ¿Hay amenazas, chantaje o presión para que la víctima calle o no pida ayuda?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q4c3new" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí: hay amenazas, represalias o presión explícita para que no lo cuente</div></label>
+              <label class="radio-opt"><input type="radio" name="q4c3new" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Parece que hay cierta presión aunque no se ha verbalizado claramente</div></label>
+              <label class="radio-opt"><input type="radio" name="q4c3new" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No se observan mecanismos de este tipo</div></label>
+            </div>
+          </div>
+          <div class="q-block" style="border-top: 1px dashed var(--bdr); padding-top: 18px; margin-top: 24px;">
+            <div class="q-text" style="color:var(--teal)">5. Sociograma Rápido: ¿Qué rol está tomando el resto del grupo-clase (espectadores)?</div>
+            <div class="q-hint">Esta información es clave para generar el Plan de Choque y el informe.</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q5c3" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Participan activamente o ríen las gracias (refuerzan al agresor)</div></label>
+              <label class="radio-opt"><input type="radio" name="q5c3" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Miran hacia otro lado o ignoran la situación (silencio cómplice por miedo/indiferencia)</div></label>
+              <label class="radio-opt"><input type="radio" name="q5c3" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Alguien intenta defender a la víctima o pedir ayuda</div></label>
+              <label class="radio-opt"><input type="radio" name="q5c3" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No hay testigos, ocurre en total aislamiento</div></label>
+            </div>
+          </div>
+          <div class="st-footer">
+            <button class="btn-nav" onclick="prevStep()"><i class="ph ph-arrow-left"></i> Anterior</button>
+            <button class="btn-nav btn-primary" onclick="nextStep()">Siguiente <i class="ph ph-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <div class="st-pane" id="step-4">
+          <div class="st-hdr">
+            <div class="st-title">Criterio 4: Indefensión y personalización</div>
+            <div class="st-sub">¿La víctima no puede superar la situación por sí sola y es siempre el objetivo específico de las agresiones?</div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">1. ¿La víctima puede defenderse o pedir ayuda con eficacia?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q1c4" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Lo intenta o responde de forma impulsiva/desesperada, pero no frena el acoso</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c4" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Ni siquiera puede intentarlo (miedo, bloqueo, incapacidad)</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c4" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">A veces lo consigue, pero de forma insuficiente</div></label>
+              <label class="radio-opt"><input type="radio" name="q1c4" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Puede defenderse o buscar ayuda con éxito cuando lo intenta</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">2. ¿Qué signos de malestar se observan? (Marca todos los que apliquen)</div>
+            <div class="check-group" id="cg-signos">
+              <label class="check-opt"><input type="checkbox" value="sin_signos" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">No se observan signos</div></label>
+              <label class="check-opt"><input type="checkbox" value="sin_datos" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">No hay datos suficientes</div></label>
+              <label class="check-opt"><input type="checkbox" value="llanto" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Llanto o tristeza persistente</div></label>
+              <label class="check-opt"><input type="checkbox" value="miedo" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Miedo a venir al centro o a ciertos espacios</div></label>
+              <label class="check-opt"><input type="checkbox" value="rendimiento" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Bajada del rendimiento académico</div></label>
+              <label class="check-opt"><input type="checkbox" value="aislamiento" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Aislamiento de compañeros en el centro</div></label>
+              <label class="check-opt"><input type="checkbox" value="fisico" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Síntomas físicos frecuentes (estómago, cabeza...)</div></label>
+              <label class="check-opt"><input type="checkbox" value="casa" onchange="onSignoChange(this)"><div class="check-box"></div><div class="check-txt">Cambios de comportamiento comunicados desde casa</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">3. ¿Cuenta con apoyo efectivo de compañeros/as?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q4c3" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">No, está completamente sola o solo, sin ningún apoyo en el grupo</div></label>
+              <label class="radio-opt"><input type="radio" name="q4c3" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Tiene muy pocos aliados y son poco efectivos para ayudarle</div></label>
+              <label class="radio-opt"><input type="radio" name="q4c3" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Tiene algún apoyo aunque limitado o no siempre efectivo</div></label>
+              <label class="radio-opt"><input type="radio" name="q4c3" value="d" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Cuenta con apoyo efectivo de varios compañeros/as</div></label>
+            </div>
+          </div>
+          <div class="q-block">
+            <div class="q-text">4. ¿Es este alumno/a el objetivo habitual de las agresiones?</div>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="q3c4" value="a" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Sí, siempre o casi siempre es este alumno/a el objetivo de las agresiones</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c4" value="b" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Es el objetivo principal, aunque en ocasiones las conductas afectan también a otros</div></label>
+              <label class="radio-opt"><input type="radio" name="q3c4" value="c" onchange="updateStepState()"><div class="radio-dot"></div><div class="radio-txt">Las conductas se reparten entre varios alumnos sin un objetivo fijo</div></label>
+            </div>
+          </div>
+          <div class="st-footer">
+            <button class="btn-nav" onclick="prevStep()"><i class="ph ph-arrow-left"></i> Anterior</button>
+            <button class="btn-nav btn-final" onclick="analizar()"><i class="ph ph-magnifying-glass"></i> Analizar Situación</button>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="result" id="result">
+        <div class="result-actions">
+          <button class="btn-act" onclick="window.print()"><i class="ph ph-printer"></i> Imprimir informe</button>
+          <button class="btn-act" onclick="descargarPDF()"><i class="ph ph-download-simple"></i> Descargar PDF</button>
+          <button class="btn-act" onclick="limpiar()"><i class="ph ph-arrows-clockwise"></i> Nuevo análisis</button>
+        </div>
+        
+        <div id="ri"></div>
+
+        <div class="conv-draft-box" id="convDraftContainer" style="display:none;">
+          <div class="conv-draft-hdr">
+            <div class="conv-draft-title"><i class="ph ph-file-text" style="font-size:1.3rem;"></i> Borrador para Plataforma CONV</div>
+            <button class="btn-nav btn-primary" style="padding:6px 14px; font-size:0.8rem;" onclick="copyConv()">
+              <i class="ph ph-copy"></i> Copiar texto
+            </button>
+          </div>
+          <p style="font-size:0.8rem; color:var(--txt3); margin-bottom:12px;">Texto autogenerado listo para pegar en el registro oficial de incidencias de convivencia.</p>
+          <textarea id="convDraftText" class="conv-draft-text" readonly></textarea>
+        </div>
+        
+        <div class="disclaimer">
+          <strong>Aviso:</strong> Herramienta orientativa. La decisión de activar el protocolo recae en el equipo directivo y la Inspección Educativa.
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalNorm" onclick="if(event.target===this)closeNorm()">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-hdr-title">&#128203; Normativa oficial &mdash; Castilla y León</div>
+      <button class="modal-close" onclick="closeNorm()"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="ns"><div class="ns-hdr" onclick="tog(this)">1. Definición oficial de acoso escolar<span class="ns-arr">&#9658;</span></div>
+        <div class="ns-body">
+          <p>Según el <strong>Programa P.A.R.</strong> de la Consejería de Educación de Castilla y León y el <strong>Protocolo Provincial 2024</strong>:</p>
+          <div class="cbox"><strong>Definición oficial</strong>Se considera que existe acoso escolar cuando un alumno recibe un continuo y deliberado acoso verbal, físico y/o psicológico por parte de uno o varios compañeros, que se comportan con él cruelmente con el objeto de someterlo, apocarlo, asustarlo y/o amenazarlo, atentando contra su dignidad.</div>
+        </div>
+      </div>
+      <div class="ns"><div class="ns-hdr" onclick="tog(this)">2. Los 4 criterios diagnósticos (ORDEN EDU/1071/2017)<span class="ns-arr">&#9658;</span></div>
+        <div class="ns-body">
+          <div class="cbox"><strong>1. INTENCIONALIDAD</strong>La agresión no constituye un hecho aislado, se dirige a una persona concreta con la intención de convertirla en víctima.</div>
+          <div class="cbox"><strong>2. REPETICIÓN</strong>La agresión es constante y prolongada en el tiempo. En la víctima se genera la expectativa de continuidad.</div>
+          <div class="cbox"><strong>3. DESEQUILIBRIO DE PODER</strong>Desigualdad de poder físico, psicológico o social que genera un desequilibrio de fuerzas.</div>
+          <div class="cbox"><strong>4. INDEFENSIÓN Y PERSONALIZACIÓN</strong>El objetivo suele ser un solo alumno, colocado en situación de indefensión.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- TEMA MODO OSCURO ---
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', newTheme);
+  
+  const icon = document.getElementById('themeIcon');
+  if(newTheme === 'dark') {
+    icon.classList.remove('ph-moon'); icon.classList.add('ph-sun');
+  } else {
+    icon.classList.remove('ph-sun'); icon.classList.add('ph-moon');
+  }
+  localStorage.setItem('acosoAppTheme', newTheme);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('acosoAppTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const icon = document.getElementById('themeIcon');
+  if(savedTheme === 'dark') { icon.classList.remove('ph-moon'); icon.classList.add('ph-sun'); }
+});
+
+// --- GUARDAR Y CARGAR PROGRESO LOCAL (.JSON) ---
+function saveProgress() {
+  const data = { txt: document.getElementById('txt').value, answers: {} };
+  
+  // Recoger radios y checkboxes marcados
+  document.querySelectorAll('input[type=radio]:checked, input[type=checkbox]:checked').forEach(el => {
+    if(el.type === 'radio') {
+        data.answers[el.name] = el.value;
+    } else {
+        data.answers[el.value] = true; // Guardamos el value del checkbox como key
+    }
+  });
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  
+  const date = new Date().toISOString().split('T')[0];
+  a.download = `progreso_acoso_${date}.json`;
+  a.click();
+  
+  URL.revokeObjectURL(url);
+  showToast('Progreso guardado en tu equipo', 'success');
+}
+
+function loadProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      limpiar(false); // Limpiamos sin mostrar toast
+      
+      document.getElementById('txt').value = data.txt || '';
+      updateCharCount();
+
+      // Restaurar respuestas
+      Object.keys(data.answers).forEach(key => {
+        if (data.answers[key] === true) {
+            // Es un checkbox
+            const cb = document.querySelector(`input[type=checkbox][value="${key}"]`);
+            if(cb) { cb.checked = true; cb.closest('.check-opt').classList.add('sel'); }
+        } else {
+            // Es un radio
+            const rb = document.querySelector(`input[type=radio][name="${key}"][value="${data.answers[key]}"]`);
+            if(rb) { rb.checked = true; rb.closest('.radio-opt').classList.add('sel'); }
+        }
+      });
+
+      updateStepState();
+      showToast('Sesión restaurada correctamente', 'success');
+    } catch(err) {
+      showToast('Error al leer el archivo. Asegúrate de que es un .json válido.', 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // Reset input para poder cargar el mismo archivo dos veces
+}
+
+
+// --- EJEMPLOS Y TEXTAREA ---
+const EX={
+  insultos:`Desde hace más de un mes, un alumno de 10 años es insultado por tres compañeros de clase todos los días en el recreo. Le dicen que nadie quiere jugar con él y le esconden la mochila. El niño llora y tiene dolores de estómago frecuentes.`,
+  exclusion:`Una alumna de 9 años ha sido sistemáticamente excluida de su grupo desde principios de trimestre. Cada vez que se acerca, las demás se alejan. Se pasa el recreo sola.`,
+  fisico:`Ayer en el recreo se produjo una pelea entre dos alumnos. Un alumno empujó al otro. No hay constancia de que haya ocurrido antes. Los dos se han disculpado.`,
+  ciber:`Una alumna ha recibido durante semanas mensajes ofensivos en WhatsApp y fotos editadas en Instagram por un grupo de su curso. La alumna muestra síntomas de ansiedad.`
+};
+function setEx(k){
+  const txtInput = document.getElementById('txt');
+  txtInput.value=EX[k]; 
+  updateCharCount();
+  showToast('Ejemplo cargado en el área de texto', 'success');
+}
+
+function updateCharCount() {
+  const txt = document.getElementById('txt').value;
+  const counter = document.getElementById('charCounter');
+  const len = txt.trim().length;
+  counter.textContent = `${len} / mín. 30`;
+  if (len >= 30) { counter.classList.add('valid'); } else { counter.classList.remove('valid'); }
+}
+
+// --- TOAST NOTIFICATIONS ---
+function showToast(msg, type = 'error') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = type === 'error' ? `<i class="ph ph-warning-circle" style="font-size:1.2rem"></i> ${msg}` : `<i class="ph ph-check-circle" style="font-size:1.2rem"></i> ${msg}`;
+  container.appendChild(toast);
+  toast.offsetHeight;
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3500);
+}
+
+// --- STEPPER LOGIC ---
+let currStep = 1;
+function goToStep(step) {
+  currStep = step;
+  document.querySelectorAll('.st-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.st-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`step-${step}`).classList.add('active');
+  document.getElementById(`tab-${step}`).classList.add('active');
+  window.scrollTo({top: document.querySelector('.stepper-wrap').offsetTop - 100, behavior: 'smooth'});
+}
+function nextStep() { if(currStep < 4) goToStep(currStep + 1); }
+function prevStep() { if(currStep > 1) goToStep(currStep - 1); }
+
+document.querySelectorAll('input[type=radio]').forEach(inp => {
+  inp.addEventListener('change', function() {
+    document.querySelectorAll(`input[name="${this.name}"]`).forEach(r => r.closest('.radio-opt').classList.remove('sel'));
+    this.closest('.radio-opt').classList.add('sel');
+    updateStepState();
+  });
+});
+
+function onSignoChange(input) {
+  const all = document.querySelectorAll('#cg-signos input');
+  if((input.value === 'sin_signos' || input.value === 'sin_datos') && input.checked) {
+    all.forEach(cb => { if(cb !== input) { cb.checked = false; cb.closest('.check-opt').classList.remove('sel'); } });
+  } else if(input.checked) {
+    const none = document.querySelector('#cg-signos input[value="sin_signos"]');
+    const nodata = document.querySelector('#cg-signos input[value="sin_datos"]');
+    if(none) { none.checked = false; none.closest('.check-opt').classList.remove('sel'); }
+    if(nodata) { nodata.checked = false; nodata.closest('.check-opt').classList.remove('sel'); }
+  }
+  input.closest('.check-opt').classList.toggle('sel', input.checked);
+  updateStepState();
+}
+
+function updateStepState() {
+  const req = { 1: 3, 2: 3, 3: 5, 4: 4 }; 
+  for(let i=1; i<=4; i++) {
+    let ans = 0;
+    if(i===1) { ans = new Set([...document.querySelectorAll('#step-1 input[type=radio]:checked')].map(e=>e.name)).size; }
+    if(i===2) { ans = new Set([...document.querySelectorAll('#step-2 input[type=radio]:checked')].map(e=>e.name)).size; }
+    if(i===3) { ans = new Set([...document.querySelectorAll('#step-3 input[type=radio]:checked')].map(e=>e.name)).size; }
+    if(i===4) { 
+      ans = new Set([...document.querySelectorAll('#step-4 input[type=radio]:checked')].map(e=>e.name)).size; 
+      if(document.querySelectorAll('#cg-signos input:checked').length > 0) ans++;
+    }
+    const icon = document.getElementById(`ico-tab-${i}`);
+    if(ans >= req[i]) {
+      icon.style.display = 'inline-block'; document.getElementById(`tab-${i}`).classList.add('completed');
+    } else {
+      icon.style.display = 'none'; document.getElementById(`tab-${i}`).classList.remove('completed');
+    }
+  }
+}
+
+function limpiar(showT = true) {
+  document.getElementById('txt').value = '';
+  updateCharCount();
+  document.querySelectorAll('.radio-opt.sel, .check-opt.sel').forEach(el => el.classList.remove('sel'));
+  document.querySelectorAll('input').forEach(el => el.checked = false);
+  document.getElementById('result').classList.remove('on');
+  document.getElementById('convDraftContainer').style.display = 'none';
+  updateStepState();
+  goToStep(1);
+  if(showT) showToast('Formulario reseteado', 'success');
+}
+
+// --- LÓGICA DE DIAGNÓSTICO ---
+const NEGS_GEN=[
+  {kw:['primera vez','única vez','solo una vez','es la primera vez','nunca antes'],label:'Hecho aislado sin precedentes'},
+  {kw:['se reconciliaron','se disculparon','ya están bien','se han perdonado','resuelto','solucionado'],label:'Conflicto ya resuelto entre las partes'},
+  {kw:['conflicto puntual','pelea puntual','situación puntual','incidente puntual'],label:'Situación explícitamente puntual'},
+  {kw:['los dos se pelean','ambos se agreden','se agreden mutuamente','pelea mutua','situación mutua','los dos se insultan'],label:'Conflicto bilateral simétrico'}
+];
+const CIBER_PLAT=['whatsapp','instagram','facebook','tiktok','twitter','telegram','snapchat','red social','redes sociales','internet','online','chat','email','correo','móvil','movil'];
+const CIBER_CONT=['mensaje','mensajes','foto','fotos','video','vídeo','publicación','publicacion','perfil falso','anonimo','anónimo','grabación','grabacion','captura'];
+const CIBER_DANO=['insulto','insultos','amenaza','amenazas','humilla','humillan','difunde','difunden','publica','publican','comparte','comparten','reenvía','reenvian','viraliza','burlas'];
+const GENERO_EXP=['acoso sexual','comentarios sexuales','tocamientos','tocamiento','sexista','machista','por ser chica','por ser niña','por ser mujer','humillaciones sexistas','chantaje sexual'];
+const GENERO_DIG=['foto íntima','fotos íntimas','video íntimo','vídeo íntimo','imagenes íntimas','imágenes íntimas','difusión íntima'];
+const NEG_PREFIXES=['no ','sin ','nunca ','jamás ','jamas ','ni '];
+
+function buscar(t,kws){return kws.filter(k=>t.includes(k));}
+function buscarNoNegado(t,kws){
+  return kws.filter(k=>{
+    let idx=t.indexOf(k);
+    while(idx!==-1){
+      const prev=t.slice(Math.max(0,idx-18),idx);
+      if(!NEG_PREFIXES.some(n=>prev.includes(n))) return true;
+      idx=t.indexOf(k,idx+k.length);
+    }
+    return false;
+  });
+}
+
+function getStructuredData(){
+  function rv(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:null;}
+  function signos(){return document.querySelectorAll('#cg-signos input:checked:not([value="sin_signos"]):not([value="sin_datos"])').length;}
+  function sinSignosMarcado(){return !!document.querySelector('#cg-signos input[value="sin_signos"]:checked');}
+  function sinDatosMarcado(){return !!document.querySelector('#cg-signos input[value="sin_datos"]:checked');}
+
+  let c1=0,c1t=[],c1c=[];
+  if(rv('q1c1')==='a'){c1+=1.5;c1t.push('Conducta claramente dirigida a esta persona concreta');} else if(rv('q1c1')==='b'){c1+=0.8;c1t.push('Conducta probablemente dirigida a esta persona');} else if(rv('q1c1')==='d'){c1-=0.8;c1c.push('No parece haber objetivo concreto');}
+  if(rv('q2c1')==='a'){c1+=1.5;c1t.push('Intención de dañar claramente perceptible');} else if(rv('q2c1')==='b'){c1+=0.8;c1t.push('Probable intención de dañar');} else if(rv('q2c1')==='d'){c1-=0.5;c1c.push('Sin aparente intención de causar daño');}
+  if(rv('q3c1')==='a'){c1+=0.8;c1t.push('La víctima es un blanco pasivo');} else if(rv('q3c1')==='b'){c1+=1.0;c1t.push('Vulnerabilidad de la víctima usada como excusa');} else if(rv('q3c1')==='c'){c1+=0.5;c1t.push('La agresión inicial parte de los otros');} else if(rv('q3c1')==='d'){c1-=1.2;c1c.push('Situación mutua: ambos inician el conflicto por igual');}
+
+  let c2=0,c2t=[],c2c=[];
+  if(rv('q1c2')==='a'){c2-=1.5;c2c.push('Primera vez que ocurre: sin patrón de repetición');} else if(rv('q1c2')==='b'){c2-=0.5;c2c.push('Menos de una semana de duración');} else if(rv('q1c2')==='c'){c2+=0.2;c2t.push('Duración de 1 a 4 semanas');} else if(rv('q1c2')==='d'){c2+=1.2;c2t.push('Lleva más de un mes produciéndose');} else if(rv('q1c2')==='e'){c2+=1.8;c2t.push('Se prolonga más de un trimestre');}
+  if(rv('q2c2')==='a'){c2-=1.5;c2c.push('Solo ha ocurrido una única vez');} else if(rv('q2c2')==='b'){c2-=0.4;c2c.push('Ocurre de forma esporádica');} else if(rv('q2c2')==='c'){c2+=1;c2t.push('Ocurre varias veces por semana');} else if(rv('q2c2')==='d'){c2+=1.8;c2t.push('Ocurre casi todos los días o a diario');}
+  if(rv('q3c2')==='a'){c2+=1.2;c2t.push('La víctima teme que vuelva a ocurrir');} else if(rv('q3c2')==='b'){c2+=0.6;c2t.push('La víctima anticipa nuevos episodios');} else if(rv('q3c2')==='c'){c2-=0.2;c2c.push('No consta expectativa de continuidad en la víctima');}
+
+  let c3=0,c3t=[],c3c=[];
+  if(rv('q1c3')==='a'){c3+=0.8;c3t.push('El agresor tiene superioridad física');} else if(rv('q1c3')==='d'){c3-=0.3;c3c.push('La víctima tiene más capacidad física');}
+  if(rv('q2c3')==='a'){c3+=1.8;c3t.push('Un grupo actúa siempre contra la víctima sola');} else if(rv('q2c3')==='b'){c3+=0.8;c3t.push('A veces actúa con apoyo de otros compañeros');} else if(rv('q2c3')==='d'){c3-=0.25;c3c.push('La víctima también cuenta con apoyo de compañeros');}
+  if(rv('q3c3')==='a'){c3+=1.5;c3t.push('Clara superioridad en estatus social o influencia');} else if(rv('q3c3')==='b'){c3+=0.8;c3t.push('Ligera superioridad de estatus social');} else if(rv('q3c3')==='d'){c3-=0.4;}
+  if(rv('q4c3new')==='a'){c3+=1.2;c3t.push('Hay amenazas o presión psicológica activa para que no lo cuente');} else if(rv('q4c3new')==='b'){c3+=0.5;c3t.push('Posible presión psicológica para guardar silencio');}
+
+  let c4=0,c4t=[],c4c=[];
+  if(rv('q1c4')==='a'){c4+=1.5;c4t.push('Intenta defenderse pero sin ningún resultado positivo');} else if(rv('q1c4')==='b'){c4+=1.8;c4t.push('Ni siquiera puede intentar defenderse o pedir ayuda');} else if(rv('q1c4')==='d'){c4-=0.8;c4c.push('La víctima puede defenderse o buscar ayuda con éxito');}
+  const ns=signos();
+  if(sinSignosMarcado()){c4-=0.2;c4c.push('No se observan signos claros de malestar');} else if(sinDatosMarcado()){c4-=0.1;c4c.push('No hay datos suficientes sobre malestar');} else if(ns>=3){c4+=1.2;c4t.push(`${ns} signos de malestar observados`);} else if(ns>=1){c4+=0.5;c4t.push(`${ns} signo de malestar`);}
+  if(rv('q4c3')==='a'){c4+=1.2;c4t.push('La víctima está sola, sin apoyo efectivo');} else if(rv('q4c3')==='b'){c4+=0.7;c4t.push('Cuenta con muy poco apoyo ineficaz');} else if(rv('q4c3')==='d'){c4-=0.7;c4c.push('Cuenta con apoyo efectivo de compañeros');}
+  if(rv('q3c4')==='a'){c4+=1.2;c4t.push('Este alumno es siempre el objetivo específico');} else if(rv('q3c4')==='b'){c4+=0.6;c4t.push('Es el objetivo principal de las agresiones');} else if(rv('q3c4')==='c'){c4-=0.3;c4c.push('Las conductas se reparten entre varios alumnos');}
+
+  const norm = (v, max) => Math.max(0, Math.min(1, v/max)); 
+  return [
+    {score:norm(c1, 3.8), triggers:c1t, contras:c1c},
+    {score:norm(c2, 4.8), triggers:c2t, contras:c2c},
+    {score:norm(c3, 5.0), triggers:c3t, contras:c3c},
+    {score:norm(c4, 5.0), triggers:c4t, contras:c4c}
+  ];
+}
+
+function analizar() {
+  const txt = document.getElementById('txt').value.trim();
+  if(txt.length < 30) {
+    showToast('Describe la situación en el área de texto inicial (mín. 30 caracteres).', 'error');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    return;
+  }
+  
+  const req = { 1: 3, 2: 3, 3: 5, 4: 4 };
+  for(let i=1; i<=4; i++) {
+    let ans = 0;
+    if(i===1) ans = new Set([...document.querySelectorAll('#step-1 input[type=radio]:checked')].map(e=>e.name)).size;
+    if(i===2) ans = new Set([...document.querySelectorAll('#step-2 input[type=radio]:checked')].map(e=>e.name)).size;
+    if(i===3) ans = new Set([...document.querySelectorAll('#step-3 input[type=radio]:checked')].map(e=>e.name)).size;
+    if(i===4) {
+        ans = new Set([...document.querySelectorAll('#step-4 input[type=radio]:checked')].map(e=>e.name)).size;
+        if(document.querySelectorAll('#cg-signos input:checked').length > 0) ans++;
+    }
+    if(ans < req[i]) {
+      showToast(`Faltan preguntas por contestar en el Criterio ${i}`, 'error');
+      goToStep(i);
+      return;
+    }
+  }
+
+  const st = getStructuredData();
+  const rs = st.map((s, i) => {
+    let nivel = 'no';
+    const strongContra = s.contras.length>=2 || (s.contras.length>=1 && s.score<0.35);
+    if(s.score >= 0.6 && !strongContra) nivel = 'cumple';
+    else if(s.score >= 0.28 && !strongContra) nivel = 'indicios';
+    return {
+      nombre: ['Intencionalidad', 'Repetición', 'Desequilibrio de poder', 'Indefensión'][i],
+      nivel: nivel,
+      contras: s.contras
+    };
+  });
+
+  const nC = rs.filter(r => r.nivel === 'cumple').length;
+  const nN = rs.filter(r => r.nivel === 'no').length;
+  const nI = rs.filter(r => r.nivel === 'indicios').length;
+  
+  let V = 'NO';
+  if(nC === 4) V = 'SI';
+  else if(nC >= 3 && nI >= 1 && nN === 0) V = 'INDICIOS';
+  else if(nC >= 2 && nI >= 1 && nN === 0) V = 'INDICIOS';
+  else if(nC >= 2 && nN === 1 && nI >= 1) V = 'INDICIOS';
+
+  const txtNorm = txt.toLowerCase();
+  const ciber = (buscarNoNegado(txtNorm,CIBER_PLAT).length>=1&&buscarNoNegado(txtNorm,CIBER_DANO).length>=1);
+  const genero = (buscarNoNegado(txtNorm,GENERO_EXP).length>=1 || buscarNoNegado(txtNorm,GENERO_DIG).length>=1);
+  const negsGen = NEGS_GEN.filter(g=>buscar(txtNorm,g.kw).length>0);
+
+  const vC={
+    SI:{cls:'v-si',icon:'🚨',lbl:'SÍ ES ACOSO ESCOLAR',sub:'Se confirman los 4 criterios de la ORDEN EDU/1071/2017',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1','Anexo 4','Anexo 5']},
+    NO:{cls:'v-no',icon:'✅',lbl:'NO ES ACOSO ESCOLAR',sub:'Aplicar medidas ordinarias de convivencia',ann:[]},
+    INDICIOS:{cls:'v-ind',icon:'⚠️',lbl:'SOSPECHA DE ACOSO — INVESTIGAR',sub:'Indicios relevantes. Iniciar Fase 1 del protocolo',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1']}
+  }[V];
+
+  let html = `<div class="v-banner ${vC.cls}"><div class="v-hdr"><div class="v-icon">${vC.icon}</div><div><div class="v-lbl">${vC.lbl}</div><div class="v-sub">${vC.sub}</div></div></div><div class="v-body"><div class="crit-grid">`;
+  const bCls={cumple:'cb-cumple',indicios:'cb-indicios',no:'cb-no'};
+  const bTxt={cumple:'Se cumple',indicios:'Indicios',no:'No se cumple'};
+  
+  rs.forEach(r => {
+    html += `<div class="crit-card ${r.nivel}"><div class="crit-title">${r.nombre} <span class="c-badge ${bCls[r.nivel]}">${bTxt[r.nivel]}</span></div>`;
+    if(r.contras.length > 0){
+      html += `<div class="ct-lbl">Elementos que lo contraindican:</div>`;
+      r.contras.forEach(c => html += `<div class="ct-item"><i class="ph-fill ph-x-circle" style="color:var(--red)"></i> ${c}</div>`);
+    }
+    html += `</div>`;
+  });
+
+  let razon = '';
+  if(V==='SI') razon='Los cuatro criterios diagnósticos concurren simultáneamente según la ORDEN EDU/1071/2017, apdo. 2.2.';
+  else if(V==='INDICIOS') razon='La situación presenta indicadores de riesgo significativos que requieren investigación urgente. Se recomienda iniciar la Fase 1 del protocolo para obtener más información.';
+  else {
+    razon='La situación descrita no cumple los criterios necesarios para ser calificada como acoso escolar. ';
+    if(negsGen.length)razon+='Se detectan elementos que contraindican el acoso: '+negsGen.map(n=>n.label).join(', ')+'. ';
+    razon+='Corresponde aplicar el procedimiento ordinario de actuación ante situaciones de conflicto.';
+  }
+  html += `</div><div class="reasoning"><strong>Conclusión normativa:</strong> ${razon}</div>`;
+
+  if(ciber) html += `<div class="warn-box warn-ciber"><i class="ph-fill ph-warning-circle warn-icon"></i><div><strong>Posible CIBERACOSO detectado</strong><br>Se detectan conductas a través de medios digitales. Según la ORDEN EDU/1071/2017, adoptar medidas para uso adecuado de medios digitales.</div></div>`;
+  if(genero) html += `<div class="warn-box warn-genero"><i class="ph-fill ph-warning-circle warn-icon"></i><div><strong>Posible VIOLENCIA DE GÉNERO detectada</strong><br>Comunicar tal circunstancia a los Servicios Sociales más próximos.</div></div>`;
+  html += `</div></div>`;
+
+  // --- GENERACIÓN DEL PLAN DE CHOQUE (DINÁMICO) ---
+  if(V === 'SI' || V === 'INDICIOS') {
+      let actions = [
+          '<strong>Contención Inmediata:</strong> Garantiza que el alumno/a no se quede solo/a en espacios no supervisados (pasillos, recreo, cambios de clase) durante el día de hoy.',
+          '<strong>Regla de Oro (NO Mediación):</strong> Bajo ningún concepto reúnas a la víctima y al presunto agresor para que "hablen" o "se pidan perdón". Al haber desequilibrio de poder, esto agrava la indefensión.',
+          '<strong>Comunicación Oficial:</strong> Informa a Jefatura de Estudios/Dirección HOY mismo y facilítales el borrador o el PDF que genera esta herramienta.'
+      ];
+      
+      if(ciber) actions.push('<strong>Protección Digital:</strong> Pide a la familia o al menor que hagan capturas de pantalla de los mensajes/redes sociales antes de que el agresor los borre.');
+      if(document.querySelector('input[value="miedo"]')?.checked) actions.push('<strong>Acceso Seguro:</strong> Acuerda un plan de entrada y salida del centro (ej. que le reciba un profesor de confianza en la puerta) para evitar episodios de pánico al llegar.');
+      
+      const sociograma = document.querySelector('input[name="q5c3"]:checked')?.value;
+      if(sociograma === 'a' || sociograma === 'b') actions.push('<strong>Intervención de Grupo:</strong> El grupo apoya o calla ante el agresor. Solicita a Orientación una dinámica de tutoría urgente enfocada en los espectadores (ej. sin mencionar a la víctima directamente).');
+      
+      const apoyo = document.querySelector('input[name="q4c3"]:checked')?.value;
+      if(apoyo === 'a') actions.push('<strong>Red de Apoyo Rápida:</strong> La víctima está totalmente aislada. Identifica a 2-3 alumnos empáticos del aula y asígnales discretamente la tarea de acompañarle en el recreo.');
+
+      html += `
+      <div class="choque-box" style="margin-top:24px;">
+          <div class="choque-hdr"><i class="ph-fill ph-lightning"></i> PLAN DE CHOQUE (Primeras 24 horas)</div>
+          <div class="choque-desc">Acciones preventivas urgentes para el docente, a aplicar <strong>antes</strong> de que se complete el protocolo oficial:</div>
+          <ul class="choque-list">
+              ${actions.map(a => `<li><i class="ph-fill ph-check-circle"></i> <span>${a}</span></li>`).join('')}
+          </ul>
+      </div>`;
+  }
+
+  // Se añade al HTML principal
+  document.getElementById('ri').innerHTML = html;
+  
+  // Añado las fases del protocolo oficial a continuación del plan de choque
+  let protoHtml = '';
+  function pm(c,t){return`<span class="pm ${c}">${t}</span>`;}
+  function ps(n,ti,tx,ms=[]){return`<div class="pstep"><div class="pstep-n">${n}</div><div class="pstep-body"><div class="pstep-title">${ti}</div><div class="pstep-text">${tx}</div>${ms.length?'<div class="pstep-metas">'+ms.join('')+'</div>':''}</div></div>`;}
+
+  if(V==='SI'||V==='INDICIOS'){
+    protoHtml+=`<div class="proto-wrap" style="margin-top:24px;"><div class="proto-hdr">Protocolo oficial — ORDEN EDU/1071/2017 · Fases institucionales</div><div class="proto-body">`;
+    protoHtml+=`<div><div class="phase-title">PRIMERA FASE — Conocer, identificar, parar la situación</div><div class="phase-note">Plazo máximo: 48 horas desde el conocimiento de la situación</div>`;
+    protoHtml+=ps('1','1.1 — Comunicación al equipo directivo','Cualquier miembro de la comunidad educativa pondrá la situación inmediatamente en conocimiento del director/a.',[pm('pm-plazo','Inmediato'),pm('pm-resp','Quien detecta → Director/a'),pm('pm-doc','ANEXO 1 + CONV')]);
+    protoHtml+=ps('2','2.1 — Medidas urgentes de protección','El director/a adoptará con carácter urgente medidas de protección e identificación.',[pm('pm-plazo','Urgente'),pm('pm-resp','Director/a del centro')]);
+    protoHtml+=ps('3','2.2 — Reunión inicial de valoración','Reunión con tutores, orientador/a y coordinador/a de convivencia.',[pm('pm-plazo','Máx. 24 horas'),pm('pm-doc','ANEXO 2')]);
+    protoHtml+='</div></div></div>';
+  } else {
+    protoHtml+=`<div class="proto-wrap" style="margin-top:24px;"><div class="proto-hdr">Actuaciones — Procedimiento ordinario</div><div class="proto-body"><div>
+      <div class="phase-title">Procedimiento ante situaciones de conflicto</div>
+      <div class="phase-note">ORDEN EDU/1921/2007, art. 13</div>`;
+    protoHtml+=ps('1','Comunicar a las familias','El director/a pondrá en conocimiento de las familias los hechos, motivando que no es acoso.',[pm('pm-resp','Director/a')]);
+    protoHtml+=ps('2','Aplicar el procedimiento ordinario','Se continuará con el procedimiento del RRI (medidas de actuación inmediata y recopilación de información).',[pm('pm-resp','Tutor/a · Coord. Convivencia')]);
+    protoHtml+=`</div></div></div>`;
+  }
+  
+  document.getElementById('ri').innerHTML += protoHtml;
+
+  // GENERAR BORRADOR CONV
+  generarBorrador(txt, rs, V, razon);
+
+  const resEl = document.getElementById('result');
+  resEl.classList.add('on');
+  window.scrollTo({top: resEl.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth'});
+  showToast('Análisis completado', 'success');
+}
+
+function generarBorrador(txt, rs, V, razon) {
+  const espectVal = document.querySelector('input[name="q5c3"]:checked')?.value;
+  let espectTxt = "Pendiente de valorar.";
+  if (espectVal === 'a') espectTxt = "El grupo-clase ejerce un rol de refuerzo positivo hacia el agresor (ríen las gracias/participan), agravando el desequilibrio de poder.";
+  else if (espectVal === 'b') espectTxt = "El grupo-clase mantiene un silencio cómplice, mirando hacia otro lado o ignorando la situación por miedo o indiferencia.";
+  else if (espectVal === 'c') espectTxt = "Existen dinámicas de apoyo aisladas por parte de algún compañero que intenta defender a la víctima o pedir ayuda.";
+  else if (espectVal === 'd') espectTxt = "Los hechos se producen en ausencia de testigos o en situación de aislamiento de la víctima.";
+
+  let draft = `INFORME PRELIMINAR DE VALORACIÓN DE CONVIVENCIA\n`;
+  draft += `===============================================\n\n`;
+  draft += `1. DESCRIPCIÓN DE LOS HECHOS OBSERVADOS:\n`;
+  draft += `----------------------------------------\n`;
+  draft += `${txt}\n\n`;
+  draft += `2. VALORACIÓN DE CRITERIOS (ORDEN EDU/1071/2017):\n`;
+  draft += `-------------------------------------------------\n`;
+  rs.forEach(r => { draft += `- ${r.nombre.toUpperCase()}: ${r.nivel.toUpperCase()}\n`; });
+  draft += `\n3. DINÁMICA DEL GRUPO (ESPECTADORES):\n`;
+  draft += `-------------------------------------\n`;
+  draft += `${espectTxt}\n\n`;
+  draft += `4. CONCLUSIÓN NORMATIVA:\n`;
+  draft += `------------------------\n`;
+  draft += `RESULTADO: ${V}\n`;
+  draft += `${razon}\n`;
+
+  document.getElementById('convDraftText').value = draft;
+  document.getElementById('convDraftContainer').style.display = 'block';
+}
+
+function copyConv() {
+  const textarea = document.getElementById('convDraftText');
+  textarea.select();
+  textarea.setSelectionRange(0, 99999); 
+  try {
+    navigator.clipboard.writeText(textarea.value).then(() => {
+      showToast('Borrador copiado al portapapeles', 'success');
+    });
+  } catch (err) {
+    document.execCommand('copy');
+    showToast('Borrador copiado al portapapeles', 'success');
+  }
+}
+
+function openNorm(){document.getElementById('modalNorm').classList.add('open');}
+function closeNorm(){document.getElementById('modalNorm').classList.remove('open');}
+function tog(h){const b=h.nextElementSibling;const a=h.querySelector('.ns-arr');b.classList.toggle('open');a.style.transform=b.classList.contains('open')?'rotate(90deg)':'';}
+
+function descargarPDF() {
+  const elemento = document.getElementById('result');
+  const botones = document.querySelector('.result-actions');
+  const draftBox = document.getElementById('convDraftContainer');
+  
+  botones.style.display = 'none';
+  if(draftBox) draftBox.style.display = 'none';
+  elemento.style.animation = 'none';
+  elemento.classList.add('pdf-formal');
+
+  const header = document.createElement('div');
+  header.id = 'pdf-header-temp';
+  const fecha = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  header.innerHTML = `
+    <div style="text-align:center; margin-bottom:30px;">
+        <h1 style="font-family:'Merriweather', serif; color:#0F3A59; margin:0; font-size:24px;">CEIP BLAS SIERRA</h1>
+        <h2 style="font-size:16px; color:#333; margin-top:8px; font-weight:normal;">INFORME PRELIMINAR DE VALORACIÓN DE CONVIVENCIA</h2>
+        <p style="font-size:14px; color:#666; margin-top:5px;">Fecha del informe: ${fecha}</p>
+        <hr style="border:0; border-bottom:2px solid #0F3A59; margin-top:15px;">
+    </div>
+  `;
+  elemento.insertBefore(header, elemento.firstChild);
+
+  const opciones = {
+    margin:       [15, 15, 15, 15],
+    filename:     'informe_convivencia_CEIP_Blas_Sierra.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, useCORS: true, scrollY: 0, windowY: 0 },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opciones).from(elemento).save().then(() => {
+    elemento.removeChild(header);
+    elemento.classList.remove('pdf-formal');
+    botones.style.display = 'flex';
+    if(draftBox) draftBox.style.display = 'block'; 
+    elemento.style.animation = ''; 
+    showToast('PDF descargado con éxito', 'success');
+  });
+}
+</script>
+</body>
+</html>
