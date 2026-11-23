@@ -337,7 +337,7 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light);b
     <i class="ph-fill ph-scales hdr-icon"></i>
     <div>
       <div class="hdr-title">Protocolo Acoso Escolar</div>
-      <div class="hdr-sub">Herramienta de valoración docente</div>
+      <div class="hdr-sub">Herramienta orientativa de valoración preliminar docente</div>
     </div>
     <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Cambiar modo oscuro/claro">
       <i class="ph ph-moon" id="themeIcon"></i>
@@ -346,6 +346,9 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light);b
 </header>
 
 <div class="wrap">
+  <div style="margin:18px 0 0; padding:14px 16px; border:1px solid var(--bdr); border-left:5px solid var(--blue); border-radius:10px; background:var(--card); color:var(--txt2); font-size:.88rem; line-height:1.55;">
+    <strong style="color:var(--txt);">Alcance y privacidad:</strong> herramienta orientativa para apoyar una valoración preliminar. No confirma ni descarta por sí sola el acoso escolar y no sustituye la actuación del equipo directivo ni de los profesionales competentes. La información se procesa localmente en el navegador. El código de la app no envía los datos introducidos a servidores, formularios, analítica web ni APIs. Evita introducir nombres completos u otros datos identificativos.
+  </div>
   <div class="layout">
     
     <aside class="sidebar">
@@ -358,7 +361,7 @@ textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light);b
           <i class="ph ph-upload-simple"></i> Cargar sesión
         </button>
         <input type="file" id="fileLoad" accept=".json" style="display:none" onchange="loadProgress(event)">
-        <div class="ci-desc" style="text-align:center; margin-top:8px;">Datos cifrados en tu equipo. No requieren internet.</div>
+        <div class="ci-desc" style="text-align:center; margin-top:8px;">La información introducida se procesa únicamente en este navegador. El código de la app no envía esos datos a servidores, formularios, servicios de analítica ni APIs. Los archivos JSON y PDF se descargan localmente y no están cifrados: evita nombres completos y custódialos de forma segura.</div>
       </div>
 
       <div class="sc">
@@ -948,9 +951,9 @@ function analizar() {
   const negsGen = NEGS_GEN.filter(g=>buscar(txtNorm,g.kw).length>0);
 
   const vC={
-    SI:{cls:'v-si',icon:'🚨',lbl:'SÍ ES ACOSO ESCOLAR',sub:'Se confirman los 4 criterios de la ORDEN EDU/1071/2017',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1','Anexo 4','Anexo 5']},
-    NO:{cls:'v-no',icon:'✅',lbl:'NO ES ACOSO ESCOLAR',sub:'Aplicar medidas ordinarias de convivencia',ann:[]},
-    INDICIOS:{cls:'v-ind',icon:'⚠️',lbl:'SOSPECHA DE ACOSO — INVESTIGAR',sub:'Indicios relevantes. Iniciar Fase 1 del protocolo',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1']}
+    SI:{cls:'v-si',icon:'🚨',lbl:'NIVEL ALTO DE INDICADORES COMPATIBLES CON POSIBLE ACOSO',sub:'La herramienta detecta los 4 criterios. El resultado es preliminar y no confirma por sí solo la existencia de acoso.',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1','Anexo 4','Anexo 5']},
+    NO:{cls:'v-no',icon:'✅',lbl:'NO SE DETECTAN INDICADORES SUFICIENTES EN ESTA VALORACIÓN',sub:'Este resultado no descarta otras situaciones de violencia o convivencia ni sustituye la valoración profesional.',ann:[]},
+    INDICIOS:{cls:'v-ind',icon:'⚠️',lbl:'INDICIOS COMPATIBLES CON POSIBLE ACOSO — VALORAR',sub:'Resultado preliminar: ampliar la información y aplicar el procedimiento que corresponda.',ann:['Anexo 1','Anexo 2','Anexo 3','Anexo 3.1']}
   }[V];
 
   let html = `<div class="v-banner ${vC.cls}"><div class="v-hdr"><div class="v-icon">${vC.icon}</div><div><div class="v-lbl">${vC.lbl}</div><div class="v-sub">${vC.sub}</div></div></div><div class="v-body"><div class="crit-grid">`;
@@ -1061,9 +1064,11 @@ function generarBorrador(txt, rs, V, razon) {
   draft += `\n3. DINÁMICA DEL GRUPO (ESPECTADORES):\n`;
   draft += `-------------------------------------\n`;
   draft += `${espectTxt}\n\n`;
-  draft += `4. CONCLUSIÓN NORMATIVA:\n`;
+  draft += `4. RESULTADO ORIENTATIVO DE LA HERRAMIENTA:\n`;
   draft += `------------------------\n`;
-  draft += `RESULTADO: ${V}\n`;
+  const etiquetasResultado = { SI: 'NIVEL ALTO DE INDICADORES COMPATIBLES CON POSIBLE ACOSO', INDICIOS: 'INDICIOS COMPATIBLES CON POSIBLE ACOSO', NO: 'NO SE DETECTAN INDICADORES SUFICIENTES EN ESTA VALORACIÓN' };
+  draft += `RESULTADO PRELIMINAR: ${etiquetasResultado[V]}\n`;
+  draft += `Este resultado no confirma ni descarta por sí solo una situación de acoso y debe ser valorado por los profesionales competentes.\n`;
   draft += `${razon}\n`;
 
   document.getElementById('convDraftText').value = draft;
